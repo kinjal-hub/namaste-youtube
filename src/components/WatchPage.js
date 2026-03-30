@@ -6,36 +6,45 @@ import CommentContainer from "./CommentContainer";
 import LiveChat from "./LiveChat";
 
 const WatchPage = () => {
- const [searchParams] = useSearchParams();
- console.log(searchParams.get("v"));
-
+  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    dispatch(closeMenu()); 
-  }, []);
-  return(
-    <div className="flex flex-col w-full">
-    <div className="px-5 flex w-full">
-      <div>
-      <iframe
-      width="1000"
-      height="500"
-      src={"https://www.youtube.com/embed/" + searchParams.get("v")}
-      title="YouTube video player"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerPolicy="strict-origin-when-cross-origin"
-      allowFullScreen>
-      </iframe>
+    dispatch(closeMenu());
+  }, [dispatch]);
+
+  return (
+    <div className="flex flex-col w-full p-2 md:p-5">
+      {/* Top Section: Video & Live Chat */}
+      <div className="flex flex-col lg:flex-row w-full gap-4">
+        
+        {/* Video Wrapper */}
+        <div className="w-full lg:flex-[3]"> 
+          <div className="w-full aspect-video">
+            <iframe
+              className="w-full h-full rounded-xl"
+              src={"https://www.youtube.com/embed/" + searchParams.get("v")}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+
+        {/* Live Chat - Hidden on mobile or stacked below video */}
+        <div className="w-full lg:flex-[1]">
+          <LiveChat />
+        </div>
       </div>
-      <div>
-        <LiveChat />
+
+      {/* Bottom Section: Comments */}
+      <div className="w-full lg:max-w-[75%]">
+        <CommentContainer />
       </div>
     </div>
-    <CommentContainer/>
-    </div>
-  )
-}
+  );
+};
 
 export default WatchPage;
